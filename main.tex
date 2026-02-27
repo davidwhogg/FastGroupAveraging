@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage[letterpaper, textwidth=5.0in, textheight=9.0in]{geometry}
+
+\frenchspacing
+
+\usepackage{amsmath, amsthm}
+\let\Re\relax 
+\DeclareMathOperator{\Re}{Re}
+\DeclareMathOperator{\dd}{d\!}
+\newcommand{\mean}[1]{\langle{#1}\rangle}
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+\newtheorem{conjecture}{Conjecture}[problem]
+
+\begin{document}
+    
+\section*{Group averaging of exoplanet likelihoods}
+\noindent
+\textit{by} \textbf{Hogg} \textit{for} \textbf{Shu} \textit{with help from} \textbf{Villar}.
+
+\paragraph{Abstract:}
+The idea is to figure out how to do group averages (or Bayesian marginalizations) of likelihood functions, very fast.
+
+\begin{problem}[toy]
+Imagine that we have a code handle to a scalar function $f(\theta)$ that is a function of an angle $\theta\in U(1)$.
+We don't know the form or value of this function \textsl{a priori} but we have code that can evaluate the function at any angle $0\leq\theta<2\pi$ or at any list of angles.
+We believe that this function could be reasonably well approximated by a low-degree polynomial of trig functions, or
+\begin{equation}
+    f(\theta) \approx \Re\left\{\sum_{m=0}^M a_m\,\exp(i\,m\,\theta)\right\} ~,
+\end{equation}
+where $M$ is a small integer, and the $a_m$ are complex numbers (which we don't know).
+We seek to find an estimate or value of the average $\mean{f}$ or marginalization
+\begin{equation}
+    \mean{f} = \frac{1}{2\pi}\,\int_0^{2\pi} f(\theta)\,\dd\theta
+\end{equation}
+taking as few evaluations of $f(\theta)$ as possible.
+Additionally, we would like some assessment of the quality of the approximation, or at least a flag if the approximation is poor.
+\end{problem}
+
+\begin{conjecture}
+If $f(\theta)$ is indeed well approximated by a polynomial of degree $M$, then we can get a good estimate of the average $\mean{f}$ with only $2\,M+1$ function evaluations.
+\end{conjecture}
+
+
+
+\end{document}
