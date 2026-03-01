@@ -3,13 +3,16 @@
 
 \frenchspacing
 
-\usepackage{amsmath, amsthm}
+\usepackage{amsmath, amsthm, amsfonts}
 \let\Re\relax 
 \DeclareMathOperator{\Re}{Re}
 \DeclareMathOperator{\dd}{d\!}
 \newcommand{\mean}[1]{\langle{#1}\rangle}
+\newcommand{\given}{\,|\,}
 \theoremstyle{definition}
-\newtheorem{problem}{Problem}
+\newcommand{\problemname}{Problem}
+\newtheorem{problem}{\problemname}
+\newcommand{\probref}[1]{\problemname~\ref{#1}}
 \newtheorem{conjecture}{Conjecture}[problem]
 
 \begin{document}
@@ -19,10 +22,10 @@
 \textit{by} \textbf{Hogg} \textit{for} \textbf{Shu} \textit{with help from} \textbf{Villar}.
 
 \paragraph{Abstract:}
-The idea is to figure out how to do group averages (or Bayesian marginalizations) of likelihood functions, very fast.
+The idea is to figure out how to do group averages (or Bayesian mar\-gin\-a\-li\-za\-tions) of likelihood functions, very fast.
 
-\begin{problem}[toy]
-Imagine that we have a code handle to a scalar function $f(\theta)$ that is a function of an angle $\theta\in U(1)$.
+\begin{problem}[absolute toy]\label{prob:toy}
+Imagine that we have a code handle to a scalar function $f(\theta)\in\mathbb{R}$ that is a function of an angle $\theta\in U(1)$.
 We don't know the form or value of this function \textsl{a priori} but we have code that can evaluate the function at any angle $0\leq\theta<2\pi$ or at any list of angles.
 We believe that this function could be reasonably well approximated by a low-degree polynomial of trig functions, or
 \begin{equation}
@@ -41,6 +44,42 @@ Additionally, we would like some assessment of the quality of the approximation,
 If $f(\theta)$ is indeed well approximated by a polynomial of degree $M$, then we can get a good estimate of the average $\mean{f}$ with only $2\,M+1$ function evaluations.
 \end{conjecture}
 
+\begin{conjecture}
+If you want an estimate of $\mean{f}$ and \emph{also} some kind of confidence or check of the integral, you will have to do substantially more than $2\,M+1$ function evaluations.
+\end{conjecture}
 
+\begin{problem}[exponentiated toy]\label{prob:exp}
+Same as \probref{prob:toy}---we want to know $\mean{f}$---but now it is the logarithm of the function that is well described by the polynomial; that is
+\begin{equation}
+    \ln f(\theta) \approx \Re\left\{\sum_{m=0}^M a_m\,\exp(i\,m\,\theta)\right\} ~.
+\end{equation}
+\end{problem}
+
+\begin{conjecture}
+The solution will also only take $2\,M+1$ function evaluations, but, subsequently, a numerical integration will be required.
+That is, there won't be any simple form for the integral, given the function evaluations.
+\end{conjecture}
+
+\begin{problem}[toy likelihood function]\label{prob:toylike}
+Choose a random (latent) non-zero 2-vector $z\in\mathbb{R}^2$.
+Create some ``data'' $y$ to be a noisy estimate of this 2-vector, such that
+\begin{equation}
+    y = z + \epsilon ~,
+\end{equation}
+and $\epsilon$ is drawn from a 2-dimensional normal with zero mean and variance tensor $V=\sigma^2\,I_2$, where $I_2$ is the $2\times 2$ identity matrix.
+Now imagine that we are trying to estimate $z$, given the data $y$, and knowing $\sigma$.
+Write code to compute the likelihood function $p(y\given z)$.
+
+Since we can parameterize the vector $z$ in terms of a magnitude $r$ and an angle $\theta$ (with respect to a coordinate axis, say), this likelihood function can be written as $p(y\given r,\theta)$, which is a function of $\theta$.
+Find the average of this function using the techniques developed in \probref{prob:toy} and \probref{prob:exp}.
+What issues do you encounter and how do you find $M$ values that are reasonable?
+How should you plot or present your results? Treat the data $y$ to be fixed, but the magnitude $r$ to be variable.
+\end{problem}
+
+\begin{conjecture}
+The value of $M$ will probably depend on whether you are using your solution to \probref{prob:toy} or to \probref{prob:exp}.
+It will also depend on the ratio $|z|/\sigma$ of the magnitude $|z|$ of the true $z$ you chose at the beginning to the uncertainty root-variance $\sigma$.
+This quantity is what an astronomer might call ``the signal-to-noise ratio.''
+\end{conjecture}
 
 \end{document}
