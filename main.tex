@@ -1,3 +1,5 @@
+% Copyright 2026 the author. All rights reserved.
+
 \documentclass{article}
 \usepackage[letterpaper, textwidth=5.0in, textheight=9.0in]{geometry}
 
@@ -14,6 +16,7 @@
 \newtheorem{problem}{\problemname}
 \newcommand{\probref}[1]{\problemname~\ref{#1}}
 \newtheorem{conjecture}{Conjecture}[problem]
+\newtheorem{note}{Note}[problem]
 
 \begin{document}
     
@@ -25,23 +28,23 @@
 The idea is to figure out how to do group averages (or Bayesian mar\-gin\-a\-li\-za\-tions) of likelihood functions, very fast.
 
 \begin{problem}[absolute toy]\label{prob:toy}
-Imagine that we have a code handle to a scalar function $f(\theta)\in\mathbb{R}$ that is a function of an angle $\theta\in U(1)$.
-We don't know the form or value of this function \textsl{a priori} but we have code that can evaluate the function at any angle $0\leq\theta<2\pi$ or at any list of angles.
+Imagine that we have a code handle to a scalar function $f(\phi)\in\mathbb{R}$ that is a function of an angle $\phi\in U(1)$.
+We don't know the form or value of this function \textsl{a priori} but we have code that can evaluate the function at any angle $0\leq\phi<2\pi$ or at any list of angles.
 We believe that this function could be reasonably well approximated by a low-degree polynomial of trig functions, or
 \begin{equation}
-    f(\theta) \approx \Re\left\{\sum_{m=0}^M a_m\,\exp(i\,m\,\theta)\right\} ~,
+    f(\phi) \approx \Re\left\{\sum_{m=0}^M a_m\,\exp(i\,m\,\phi)\right\} ~,
 \end{equation}
 where $M$ is a small integer, and the $a_m$ are complex numbers (which we don't know).
 We seek to find an estimate or value of the average $\mean{f}$ or marginalization
 \begin{equation}
-    \mean{f} = \frac{1}{2\pi}\,\int_0^{2\pi} f(\theta)\,\dd\theta
+    \mean{f} = \frac{1}{2\pi}\,\int_0^{2\pi} f(\phi)\,\dd\phi
 \end{equation}
-taking as few evaluations of $f(\theta)$ as possible.
+taking as few evaluations of $f(\phi)$ as possible.
 Additionally, we would like some assessment of the quality of the approximation, or at least a flag if the approximation is poor.
 \end{problem}
 
 \begin{conjecture}
-If $f(\theta)$ is indeed well approximated by a polynomial of degree $M$, then we can get a good estimate of the average $\mean{f}$ with only $2\,M+1$ function evaluations.
+If $f(\phi)$ is indeed well approximated by a polynomial of degree $M$, then we can get a good estimate of the average $\mean{f}$ with $2\,M+1$ function evaluations.
 \end{conjecture}
 
 \begin{conjecture}
@@ -51,7 +54,7 @@ If you want an estimate of $\mean{f}$ and \emph{also} some kind of confidence or
 \begin{problem}[exponentiated toy]\label{prob:exp}
 Same as \probref{prob:toy}---we want to know $\mean{f}$---but now it is the logarithm of the function that is well described by the polynomial; that is
 \begin{equation}
-    \ln f(\theta) \approx \Re\left\{\sum_{m=0}^M a_m\,\exp(i\,m\,\theta)\right\} ~.
+    \ln f(\phi) \approx \Re\left\{\sum_{m=0}^M a_m\,\exp(i\,m\,\phi)\right\} ~.
 \end{equation}
 \end{problem}
 
@@ -65,7 +68,7 @@ If we want to develop a reliable bound on the error on our estimate of the avera
 Of course thie problem as currently posed doesn't ask for a bound on the error; probably it should.
 \end{conjecture}
 
-\begin{problem}[toy likelihood function]\label{prob:toylike}
+\begin{problem}[2D toy likelihood function]\label{prob:toylike}
 Choose a random (latent) non-zero 2-vector $z\in\mathbb{R}^2$.
 Create some ``data'' $y$ to be a noisy estimate of this 2-vector, such that
 \begin{equation}
@@ -75,7 +78,7 @@ and $\epsilon$ is drawn from a 2-dimensional normal with zero mean and variance 
 Now imagine that we are trying to estimate $z$, given the data $y$, and knowing $\sigma$.
 Write code to compute the likelihood function $p(y\given z)$.
 
-Since we can parameterize the vector $z$ in terms of a magnitude $r$ and an angle $\theta$ (with respect to a coordinate axis, say), this likelihood function can be written as $p(y\given r,\theta)$, which is a function of $\theta$.
+Since we can parameterize the vector $z$ in terms of a magnitude $r$ and an angle $\phi$ (with respect to a coordinate axis, say), this likelihood function can be written as $p(y\given r,\phi)$, which is a function of $\phi$.
 Find the average of this function using the techniques developed in \probref{prob:toy} and \probref{prob:exp}.
 What issues do you encounter and how do you find $M$ values that are reasonable?
 How should you plot or present your results? Treat the data $y$ to be fixed, but the magnitude $r$ to be variable.
@@ -86,5 +89,21 @@ The value of $M$ will probably depend on whether you are using your solution to 
 It will also depend on the ratio $|z|/\sigma$ of the magnitude $|z|$ of the true $z$ you chose at the beginning to the uncertainty root-variance $\sigma$.
 This quantity is what an astronomer might call ``the signal-to-noise ratio.''
 \end{conjecture}
+
+\begin{problem}[3D toy likelihood function]\label{prob:toylike3}
+Generalize \probref{prob:toylike} to be in $\mathbb{R}^3$.
+Now instead of one angle $\phi$, there are two angles $\theta,\phi$ on the sphere.
+The polynomial now will not be in the basis of $\exp(i\,m\,\phi)$ but instead in terms of spherical harmonics $Y_{\ell m}(\theta,\phi)$.
+The complexity parameter will now be $L$, the maximum degree $\ell$ of the spherical harmonics.
+\end{problem}
+
+\begin{conjecture}
+If the likelihood is approximated as a spherical-harmonic polynomial of degree $L$, the solution will require $L^2$ function evaluations.
+\end{conjecture}
+
+\begin{note}
+It might be worth looking up (on \textit{Wikipedia} or equivalent) the mathematical concept of \emph{spherical designs}.
+There might be known methods here that are very good, or else this mathematical literature might be useless.
+\end{note}
 
 \end{document}
