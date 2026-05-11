@@ -17,12 +17,16 @@
 \newcommand{\probref}[1]{\problemname~\ref{#1}}
 \newtheorem{conjecture}{Conjecture}[problem]
 \newtheorem{note}{Note}[problem]
+\theoremstyle{definition}
+\newcommand{\solutionname}{Solution}
+\newtheorem{solution}{\solutionname}[problem]
+\usepackage{xcolor}
 
 \begin{document}
     
 \section*{Group averaging of exoplanet likelihoods}
 \noindent
-\textit{by} \textbf{Hogg} \textit{for} \textbf{Shu} \textit{with help from} \textbf{Villar}.
+\textit{by} \textbf{Hogg} \& \textbf{Shu} \textit{with help from} \textbf{Villar}.
 
 \paragraph{Abstract:}
 The idea is to figure out how to do group averages (or Bayesian mar\-gin\-a\-li\-za\-tions) of likelihood functions, very fast.
@@ -55,6 +59,41 @@ If you want an estimate of $\mean{f}$ and \emph{also} some kind of confidence or
 There might be a concept of a ``torus design'' that is relevant here.
 It is a finite set of points that can be used to exactly average a finite-degree polynomial function of angle.
 \end{note}
+
+\begin{solution}[Erin's design-average solution]
+foo and bar
+\end{solution}
+
+\begin{solution}[Erin's least-squares solution]
+Our equation for $f(\phi)\in\mathbb{R}$ is a Fourier series(sum of complex exponentials). Notice that if we take the average of each term in and then sum them together we obtain:
+\[
+\langle f \rangle = \operatorname{Re}\left( \sum_{m=0}^{M} a_m \cdot \frac{1}{2\pi} \int_{0}^{2\pi} e^{i m \phi} \, d\phi \right).
+\]
+
+We know that 
+\[
+\frac{1}{2\pi} \int_{0}^{2\pi} e^{i m \phi} \, d\phi =
+\begin{cases}
+1 & m = 0, \\
+0 & m \neq 0,
+\end{cases}
+\]
+
+This follows from Euler's Identity and De Moivre's Identity:
+
+\[
+e^{i m \phi} = \cos \phi + i \sin \phi.
+\]
+When $m = 0$, we have $e^{i m \phi} = 1$ since cos(0) = 1, and when $m \neq 0$, $e^{i m \phi} = 0$ since over a full period both sin and average to 0.
+
+This tells us that the only term remaining in our series is the first constant coefficient term. 
+
+\[
+\langle f \rangle = \operatorname{Re}(a_0).
+\]
+
+So we want to evaluate $f(\phi)$ at some points that somehow average to the constant coefficient term of the series. 
+\end{solution}
 
 \begin{problem}[exponentiated toy]\label{prob:exp}
 Same as \probref{prob:toy}---we want to know $\mean{f}$---but now it is the logarithm of the function that is well described by the polynomial; that is
